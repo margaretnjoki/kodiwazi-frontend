@@ -1,6 +1,6 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import type { RentEstimateResponse } from "@/types/rent";
+import {useLocation, useNavigate} from "react-router-dom";
+import {Button} from "@/components/ui/button";
+import type {RentEstimateResponse} from "@/types/rent";
 
 interface SearchState {
     region: string;

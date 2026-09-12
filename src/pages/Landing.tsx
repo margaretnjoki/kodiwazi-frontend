@@ -1,11 +1,12 @@
-import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import {Button} from "@/components/ui/button";
+import {useNavigate} from "react-router-dom";
 
 export default function Landing() {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-slate-50 px-6 text-center">
+        <div
+            className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-slate-50 px-6 text-center">
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-slate-900">
                 Kodiwazi
             </h1>

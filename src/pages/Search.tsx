@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import {useNavigate} from "react-router-dom";
+import {useState} from "react";
+import {Button} from "@/components/ui/button";
 import {
     Select,
     SelectContent,
@@ -24,7 +24,7 @@ export default function Search() {
     const navigate = useNavigate();
 
     const handleSearch = () => {
-        navigate("/results", { state: { region, area, houseType } });
+        navigate("/results", {state: {region, area, houseType}});
     };
 
     return (
@@ -35,9 +35,12 @@ export default function Search() {
             </p>
 
             <div className="flex flex-col gap-4 w-full max-w-xs">
-                <Select value={region} onValueChange={(value) => { setRegion(value); setArea(""); }}>
+                <Select value={region} onValueChange={(value) => {
+                    setRegion(value);
+                    setArea("");
+                }}>
                     <SelectTrigger>
-                        <SelectValue placeholder="Select Region" />
+                        <SelectValue placeholder="Select Region"/>
                     </SelectTrigger>
                     <SelectContent>
                         {REGIONS.map((r) => (
@@ -48,7 +51,7 @@ export default function Search() {
 
                 <Select value={area} onValueChange={setArea} disabled={!region}>
                     <SelectTrigger>
-                        <SelectValue placeholder="Select Area" />
+                        <SelectValue placeholder="Select Area"/>
                     </SelectTrigger>
                     <SelectContent>
                         {(AREAS[region] || []).map((a) => (
@@ -59,7 +62,7 @@ export default function Search() {
 
                 <Select value={houseType} onValueChange={setHouseType}>
                     <SelectTrigger>
-                        <SelectValue placeholder="Select House Type" />
+                        <SelectValue placeholder="Select House Type"/>
                     </SelectTrigger>
                     <SelectContent>
                         {HOUSE_TYPES.map((h) => (
