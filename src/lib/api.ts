@@ -2,6 +2,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export class ApiError extends Error {
     status: number;
+
     constructor(message: string, status: number) {
         super(message);
         this.status = status;
@@ -16,13 +17,13 @@ export async function apiRequest<TResponse>(
         token?: string | null;
     } = {}
 ): Promise<TResponse> {
-    const { method = "GET", body, token } = options;
+    const {method = "GET", body, token} = options;
 
     const response = await fetch(`${BASE_URL}${path}`, {
         method,
         headers: {
             "Content-Type": "application/json",
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+            ...(token ? {Authorization: `Bearer ${token}`} : {}),
         },
         body: body ? JSON.stringify(body) : undefined,
     });
@@ -38,4 +39,8 @@ export async function apiRequest<TResponse>(
     }
 
     return response.json();
+}
+
+export function getEstimateUrl(areaId: string, houseType: string) {
+    return `/areas/${areaId}/house-types/${houseType}/estimate`;
 }
