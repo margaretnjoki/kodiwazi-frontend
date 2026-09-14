@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { apiRequest, ApiError, getEstimateUrl } from "@/lib/api";
-import type { RentEstimateResponse, HouseType } from "@/types/rent";
+import type { RentEstimateResponse, RentEstimateSegment, HouseType } from "@/types/rent";
 import { HOUSE_TYPE_OPTIONS } from "@/types/rent";
 
 interface SearchState {
@@ -14,6 +14,39 @@ interface SearchState {
 
 function houseTypeLabel(houseType: HouseType) {
     return HOUSE_TYPE_OPTIONS.find((h) => h.value === houseType)?.label ?? houseType;
+}
+
+function SegmentCard({
+                         title,
+                         segment,
+                     }: {
+    title: string;
+    segment: RentEstimateSegment | null;
+}) {
+    const hasData = segment !== null && segment.medianAmount !== null;
+
+    return (
+        <div className="border rounded-lg p-6 text-left">
+            <h2 className="font-semibold text-slate-900 mb-3">{title}</h2>
+
+            {hasData ? (
+                <>
+                    <p className="text-3xl font-bold text-slate-900">
+                        KSh {segment.medianAmount.toLocaleString()}
+                    </p>
+                    <p className="text-sm text-slate-500 mt-1">Median reported rent</p>
+                    <div className="mt-4 text-sm text-slate-600 space-y-1">
+                        <p>Based on {segment.sampleSize} reports</p>
+                        <p>Confidence: {segment.confidenceLabel}</p>
+                    </div>
+                </>
+            ) : (
+                <p className="text-sm text-slate-500">
+                    Not enough reports yet for this category.
+                </p>
+            )}
+        </div>
+    );
 }
 
 export default function Results() {
@@ -86,29 +119,8 @@ export default function Results() {
             </div>
 
             <div className="grid gap-6 w-full max-w-2xl md:grid-cols-2">
-                <div className="border rounded-lg p-6 text-left">
-                    <h2 className="font-semibold text-slate-900 mb-3">Utilities Included</h2>
-                    <p className="text-3xl font-bold text-slate-900">
-                        KSh {estimate.utilitiesIncluded.medianAmount.toLocaleString()}
-                    </p>
-                    <p className="text-sm text-slate-500 mt-1">Median reported rent</p>
-                    <div className="mt-4 text-sm text-slate-600 space-y-1">
-                        <p>Based on {estimate.utilitiesIncluded.sampleSize} reports</p>
-                        <p>Confidence: {estimate.utilitiesIncluded.confidenceLabel}</p>
-                    </div>
-                </div>
-
-                <div className="border rounded-lg p-6 text-left">
-                    <h2 className="font-semibold text-slate-900 mb-3">Utilities Excluded</h2>
-                    <p className="text-3xl font-bold text-slate-900">
-                        KSh {estimate.utilitiesExcluded.medianAmount.toLocaleString()}
-                    </p>
-                    <p className="text-sm text-slate-500 mt-1">Median reported rent</p>
-                    <div className="mt-4 text-sm text-slate-600 space-y-1">
-                        <p>Based on {estimate.utilitiesExcluded.sampleSize} reports</p>
-                        <p>Confidence: {estimate.utilitiesExcluded.confidenceLabel}</p>
-                    </div>
-                </div>
+                <SegmentCard title="Utilities Included" segment={estimate.utilitiesIncluded} />
+                <SegmentCard title="Utilities Excluded" segment={estimate.utilitiesExcluded} />
             </div>
 
             <Button variant="outline" onClick={() => navigate("/search")}>
