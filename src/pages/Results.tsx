@@ -1,31 +1,19 @@
-import {useLocation, useNavigate} from "react-router-dom";
-import {Button} from "@/components/ui/button";
-import type {RentEstimateResponse} from "@/types/rent";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { apiRequest, ApiError, getEstimateUrl } from "@/lib/api";
+import type { RentEstimateResponse, HouseType } from "@/types/rent";
+import { HOUSE_TYPE_OPTIONS } from "@/types/rent";
 
 interface SearchState {
-    region: string;
-    area: string;
-    houseType: string;
+    areaId: string;
+    areaName: string;
+    regionName: string;
+    houseType: HouseType;
 }
 
-function getDummyEstimate(area: string, houseType: string): RentEstimateResponse {
-    return {
-        areaId: "dummy-id",
-        areaName: area,
-        houseType: houseType,
-        utilitiesIncluded: {
-            medianAmount: 18500,
-            sampleSize: 42,
-            confidenceScore: 0.81,
-            confidenceLabel: "High",
-        },
-        utilitiesExcluded: {
-            medianAmount: 15000,
-            sampleSize: 37,
-            confidenceScore: 0.74,
-            confidenceLabel: "Medium",
-        },
-    };
+function houseTypeLabel(houseType: HouseType) {
+    return HOUSE_TYPE_OPTIONS.find((h) => h.value === houseType)?.label ?? houseType;
 }
 
 export default function Results() {
@@ -33,6 +21,34 @@ export default function Results() {
     const navigate = useNavigate();
     const state = location.state as SearchState | null;
 
+    const [estimate, setEstimate] = useState<RentEstimateResponse | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!state) {
+            setLoading(false);
+            return;
+        }
+
+        async function loadEstimate() {
+            try {
+                const data = await apiRequest<RentEstimateResponse>(
+                    getEstimateUrl(state.areaId, state.houseType)
+                );
+                setEstimate(data);
+            } catch (err) {
+                setError(
+                    err instanceof ApiError
+                        ? err.message
+                        : "Couldn't load rent data. Please try again."
+                );
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadEstimate();
+    }, [state]);
 
     if (!state) {
         return (
@@ -43,15 +59,30 @@ export default function Results() {
         );
     }
 
-    const estimate = getDummyEstimate(state.area, state.houseType);
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <p className="text-slate-500">Loading rent estimate...</p>
+            </div>
+        );
+    }
+
+    if (error || !estimate) {
+        return (
+            <div className="min-h-screen flex flex-col items-center justify-center gap-4 px-6 text-center">
+                <p className="text-red-600">{error ?? "No data available for this selection."}</p>
+                <Button onClick={() => navigate("/search")}>Back to Search</Button>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen flex flex-col items-center px-6 py-16 gap-8">
             <div className="text-center">
                 <h1 className="text-3xl font-bold text-slate-900">
-                    {estimate.areaName} — {estimate.houseType}
+                    {estimate.areaName} — {houseTypeLabel(estimate.houseType)}
                 </h1>
-                <p className="text-slate-600 mt-1">{state.region}</p>
+                <p className="text-slate-600 mt-1">{state.regionName}</p>
             </div>
 
             <div className="grid gap-6 w-full max-w-2xl md:grid-cols-2">
