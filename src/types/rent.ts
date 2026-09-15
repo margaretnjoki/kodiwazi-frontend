@@ -9,14 +9,14 @@ export type HouseType =
     | "MAISONETTE";
 
 export const HOUSE_TYPE_OPTIONS: { value: HouseType; label: string }[] = [
-    { value: "SINGLE_ROOM", label: "Single Room" },
-    { value: "BEDSITTER", label: "Bedsitter" },
-    { value: "STUDIO", label: "Studio" },
-    { value: "ONE_BEDROOM", label: "One Bedroom" },
-    { value: "TWO_BEDROOM", label: "Two Bedroom" },
-    { value: "THREE_BEDROOM", label: "Three Bedroom" },
-    { value: "BUNGALOW", label: "Bungalow" },
-    { value: "MAISONETTE", label: "Maisonette" },
+    {value: "SINGLE_ROOM", label: "Single Room"},
+    {value: "BEDSITTER", label: "Bedsitter"},
+    {value: "STUDIO", label: "Studio"},
+    {value: "ONE_BEDROOM", label: "One Bedroom"},
+    {value: "TWO_BEDROOM", label: "Two Bedroom"},
+    {value: "THREE_BEDROOM", label: "Three Bedroom"},
+    {value: "BUNGALOW", label: "Bungalow"},
+    {value: "MAISONETTE", label: "Maisonette"},
 ];
 
 export interface AreaResponse {
@@ -39,4 +39,23 @@ export interface RentEstimateResponse {
     houseType: HouseType;
     utilitiesIncluded: RentEstimateSegment;
     utilitiesExcluded: RentEstimateSegment;
+}
+
+export type SubmissionStatus = string;
+
+export interface RentSubmissionRequest {
+    areaId: string;
+    houseType: HouseType;
+    amount: number;
+    utilitiesIncluded: boolean;
+}
+
+export interface RentSubmissionResponse {
+    id: string;
+    contributorId: string;
+    areaId: string;
+    houseType: HouseType;
+    amount: number;
+    status: SubmissionStatus;
+    utilitiesIncluded: boolean;
 }
