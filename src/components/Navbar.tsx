@@ -24,6 +24,9 @@ export default function Navbar() {
 
                 {isAuthenticated ? (
                     <>
+                        <Link to="/dashboard" className="text-sm text-slate-600 hover:text-slate-900">
+                            Dashboard
+                        </Link>
                         <Link to="/submit-rent" className="text-sm text-slate-600 hover:text-slate-900">
                             Submit Rent
                         </Link>
