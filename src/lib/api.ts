@@ -44,3 +44,6 @@ export async function apiRequest<TResponse>(
 export function getEstimateUrl(areaId: string, houseType: string) {
     return `/areas/${areaId}/house-types/${houseType}/estimate`;
 }
+export function getCheckQuoteUrl(areaId: string, houseType: string) {
+    return `/areas/${areaId}/house-types/${houseType}/check-quote`;
+}
