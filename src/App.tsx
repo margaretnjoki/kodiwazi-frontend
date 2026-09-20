@@ -9,6 +9,8 @@ import Register from "@/pages/Register";
 import Login from "@/pages/Login";
 import SubmitRent from "@/pages/SubmitRent";
 import Dashboard from "@/pages/Dashboard";
+import CheckQuote from "@/pages/CheckQuote";
+
 
 function App() {
     return (
@@ -20,6 +22,7 @@ function App() {
                     <Route path="/search" element={<Search />} />
                     <Route path="/results" element={<Results />} />
                     <Route path="/register" element={<Register />} />
+                    <Route path="/check-quote" element={<CheckQuote />} />
                     <Route path="/login" element={<Login />} />
                     <Route
                         path="/submit-rent"
