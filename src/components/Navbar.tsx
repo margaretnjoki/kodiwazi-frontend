@@ -30,6 +30,9 @@ export default function Navbar() {
                         <Link to="/submit-rent" className="text-sm text-slate-600 hover:text-slate-900">
                             Submit Rent
                         </Link>
+                        <Link to="/check-quote" className="text-sm text-slate-600 hover:text-slate-900">
+                            Check a Quote
+                        </Link>
                         <Button variant="outline" size="sm" onClick={handleLogout}>
                             Log out
                         </Button>
