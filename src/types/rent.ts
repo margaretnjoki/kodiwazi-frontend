@@ -59,3 +59,16 @@ export interface RentSubmissionResponse {
     status: SubmissionStatus;
     utilitiesIncluded: boolean;
 }
+export interface QuoteCheckRequest {
+    quotedAmount: number;
+    utilitiesIncluded: boolean;
+}
+
+export interface QuoteCheckResponse {
+    quotedAmount: number;
+    medianAmount: number;
+    percentageDifference: number | null;
+    verdict: string;
+    confidenceScore: number;
+    confidenceLabel: string;
+}
